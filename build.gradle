@@ -59,5 +59,3 @@ task clean(type: Delete) {
 tasks.withType(io.gitlab.arturbosch.detekt.Detekt).configureEach {
     exclude(".*/resources/.*,.*/build/.*")
 }
-
-apply from: "${rootDir}/scripts/publish-root.gradle"
