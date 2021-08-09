@@ -1,7 +1,6 @@
 package com.mocklets.pluto.modules.network.proxy
 
 import android.app.Application
-import android.webkit.URLUtil
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -39,10 +38,6 @@ internal class NetworkProxyViewModel(application: Application) : AndroidViewMode
     }
 
     fun update(requestUrl: String, requestMethod: String, proxyData: ProxyData) {
-        if (!URLUtil.isHttpsUrl(proxyData.url)) {
-            _event.postValue(Pair(false, "Need https:// URL"))
-            return
-        }
         if (proxyData.url.length < URL_MIN_LENGTH) { // length of https://
             _event.postValue(Pair(false, "Malformed URL"))
             return
