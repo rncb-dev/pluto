@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply plugin: 'maven'
 
 buildscript {
     ext.kotlin_version = '1.5.20'
@@ -56,11 +57,6 @@ task installGitHook(type: Copy) {
     from new File(rootProject.rootDir, 'pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
     fileMode 0777
-}
-
-task clean(type: Delete) {
-    dependsOn(installGitHook)
-    delete rootProject.buildDir
 }
 
 tasks.withType(io.gitlab.arturbosch.detekt.Detekt).configureEach {
