@@ -3,6 +3,8 @@ package com.mocklets.pluto.modules.network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.Collections
+import kotlin.collections.LinkedHashMap
+import kotlin.collections.set
 
 internal object NetworkCallsRepo {
 
@@ -12,8 +14,10 @@ internal object NetworkCallsRepo {
     private val apiCallMap = Collections.synchronizedMap(LinkedHashMap<String, ApiCallData>())
 
     fun set(request: ApiCallData) {
-        apiCallMap[request.id] = request
-        apiCallMap.updateLiveData()
+        synchronized(apiCallMap) {
+            apiCallMap[request.id] = request
+            apiCallMap.updateLiveData()
+        }
     }
 
 //    fun saveProxyRequest(id: String, proxy: ProxyConfig) {
@@ -38,7 +42,9 @@ internal object NetworkCallsRepo {
 //    }
 
     fun get(id: String): ApiCallData? {
-        return apiCallMap.getOrElse(id) { null }
+        return synchronized(apiCallMap) {
+            apiCallMap.getOrElse(id) { null }
+        }
     }
 
 //    fun saveException(id: String, exception: ExceptionData) {
@@ -49,7 +55,9 @@ internal object NetworkCallsRepo {
 //    }
 
     fun deleteAll() {
-        apiCallMap.clear()
-        apiCallMap.updateLiveData()
+        synchronized(apiCallMap) {
+            apiCallMap.clear()
+            apiCallMap.updateLiveData()
+        }
     }
 }
